@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import webAuth from "../utils/webauthConfig";
 
 // DB Name
@@ -13,6 +14,9 @@ const SignupForm = () => {
 	const passEl = useRef();
 	const emailEl = useRef();
 	const nameEl = useRef();
+
+	// Navigate to reac-router
+	const navigate = useNavigate();
 
 	// Form Handler
 	const formHandler = () => {
@@ -33,6 +37,9 @@ const SignupForm = () => {
 					if (res.email) {
 						setSuccess(true);
 						setUnSuccess(false);
+						setTimeout(() => {
+							navigate("/");
+						}, 4500);
 					}
 				}
 				if (er) {
@@ -251,7 +258,7 @@ const SignupForm = () => {
 					</div>
 					<div className={`${success ? "block" : "hidden"} text-center`}>
 						<h1 className="text-xl text-green-400">
-							Account Created Succesfully
+							Account created succesfully redirecting to login Page...
 						</h1>
 					</div>
 					<div className={`${unSuccess ? "block" : "hidden"} text-center`}>

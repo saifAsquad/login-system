@@ -1,12 +1,39 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import webAuth from "../utils/webauthConfig";
 
 // Db Connection
 const dbConnection = "test-db";
 
 const LoginForm = () => {
+	// JWT token
+	const [token, setToken] = useState("");
+	const [loginStatus, setLoginStatus] = useState(false);
+
+	// input refs
 	const emailEl = useRef();
 	const passwordEl = useRef();
+
+	// Navigate Object react-router-dom
+	const navigate = useNavigate();
+
+	// Location Object React Router
+	const location = useLocation();
+
+	// get token after logging in
+	useEffect(() => {
+		const jwt = location.hash;
+
+		// setToken in State
+		if (jwt !== "") {
+			setToken(jwt);
+			console.log("You are logged in!");
+			console.log(token);
+			setLoginStatus(true);
+		} else {
+			setLoginStatus(false);
+		}
+	});
 
 	// Form handler Function
 	const onFormSubmit = () => {
@@ -67,6 +94,7 @@ const LoginForm = () => {
 						Dont have account?{" "}
 						<a
 							href="javascript:void(0)"
+							onClick={() => navigate("/signup")}
 							className="hover:text-gray-500 focus:text-gray-500 focus:outline-none focus:underline hover:underline text-sm font-medium leading-none  text-gray-800 cursor-pointer"
 						>
 							{" "}
@@ -199,12 +227,31 @@ const LoginForm = () => {
 							</div>
 						</div>
 					</div>
+					<div>
+						<p
+							tabIndex="0"
+							onClick={() => {
+								navigate("/forget");
+							}}
+							className="focus:outline-none text-md cursor-pointer hover:text-slate-400 font-bold leading-6 text-gray-800"
+						>
+							Forget Password?
+						</p>
+					</div>
+					<div
+						className={`${loginStatus ? "block" : "hidden"} text-center mt-5`}
+					>
+						<h1 className="text-green-400 text-lg">
+							You are currently Logged In!
+						</h1>
+					</div>
 					<div className="mt-8">
 						<button
 							role="button"
 							id="login-btn"
 							onClick={() => onFormSubmit()}
-							className="focus:ring-2 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full"
+							className="focus:ring-2 disabled:bg-slate-500 focus:ring-offset-2 focus:ring-indigo-700 text-sm font-semibold leading-none text-white focus:outline-none bg-indigo-700 border rounded hover:bg-indigo-600 py-4 w-full"
+							disabled={loginStatus ? true : false}
 						>
 							Login
 						</button>
