@@ -49,8 +49,8 @@ const LoginForm = () => {
 				realm: dbConnection,
 				username: email,
 				password: password,
-				redirectUri: "http://localhost:3000", // change to Local host for Local Testing
-				// redirectUri: "https://login-system-saif0307.vercel.app/",
+				// redirectUri: "http://localhost:3000", // change to Local host for Local Testing
+				redirectUri: "https://login-system-saif0307.vercel.app/",
 			},
 			(el) => {
 				if (el.description) {
