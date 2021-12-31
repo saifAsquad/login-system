@@ -9,6 +9,7 @@ const LoginForm = () => {
 	// JWT token
 	const [token, setToken] = useState("");
 	const [loginStatus, setLoginStatus] = useState(false);
+	const [Error, setError] = useState(null);
 
 	// input refs
 	const emailEl = useRef();
@@ -30,6 +31,7 @@ const LoginForm = () => {
 			console.log("You are logged in!");
 			console.log(token);
 			setLoginStatus(true);
+			setError(null);
 		} else {
 			setLoginStatus(false);
 		}
@@ -47,11 +49,13 @@ const LoginForm = () => {
 				realm: dbConnection,
 				username: email,
 				password: password,
-				// redirectUri: "http://localhost:3000", // change to Local host for Local Testing
-				redirectUri: "https://login-system-saif0307.vercel.app/",
+				redirectUri: "http://localhost:3000", // change to Local host for Local Testing
+				// redirectUri: "https://login-system-saif0307.vercel.app/",
 			},
 			(el) => {
-				console.log(el);
+				if (el.description) {
+					setError(el.description);
+				}
 			}
 		);
 	};
@@ -237,6 +241,9 @@ const LoginForm = () => {
 						>
 							Forget Password?
 						</p>
+					</div>
+					<div className="text-red-600 text-bold text-center text-md">
+						{Error ? Error : ""}
 					</div>
 					<div
 						className={`${loginStatus ? "block" : "hidden"} text-center mt-5`}
